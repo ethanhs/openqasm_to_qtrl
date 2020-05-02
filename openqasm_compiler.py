@@ -6,6 +6,7 @@ Output format: qtrl list of strings formatted as follows:
 '''
 import sys
 import numpy as np
+import re
 
 custom_gates = {}
 
@@ -29,7 +30,8 @@ def compile_qasm(file_name):
             pass
         elif line[:4] == 'qreg':
             # Add string of qubit name to list of qubits we may draw from?
-            for i in range(int(line[7])):
+            n = re.match(r'qreg\s[a-z][A-Za-z0-9_]*\[([1-9]+[0-9]*|0)\];', line).group(1)
+            for i in range(int(n)):
                 q_name = "Q"+str(i)
                 qubit_names.append(q_name)
         elif line[:4] == 'creg':
@@ -178,4 +180,5 @@ def parse_reg_and_q_name(line_seg):
             reg += ch
     return q_name, reg
 
-compile_qasm(sys.argv[1])
+if __name__ == '__main__':
+    compile_qasm(sys.argv[1])
