@@ -1,8 +1,16 @@
 import os, sys
 import numpy as np
-sys.path.append("/home/wlav/quantum/Gang/qtrl/")
-sys.path.append("/home/wlav/quantum/Gang/qtrl/projects/quantum_simulation/")
-sys.path.append("/home/wlav/quantum/Gang/qtrl/tests")
+from pathlib import Path
+
+QTRL_DIR = os.path.join(os.getcwd(), 'qtrl')
+QUANTUM_SIMULATION = os.path.join(QTRL_DIR, "projects", "quantum_simulation")
+TESTS_DIR = os.path.join(QTRL_DIR, "tests")
+REF_CONFIG = os.path.join(QTRL_DIR, 'ref_config')
+REF_OUTPUT = os.path.join(QTRL_DIR, 'ref_output')
+sys.path.insert(0, QTRL_DIR)
+sys.path.insert(0, QUANTUM_SIMULATION)
+sys.path.insert(0, TESTS_DIR)
+
 import utils
 import pkgutil
 import qtrl
@@ -10,6 +18,7 @@ import common
 package = qtrl
 for importer, modname, ispkg in pkgutil.iter_modules(package.__path__):
     print("Found submodule {} (is a package: {})".format(modname, ispkg))
+from qtrl.sequencer import Sequence
 import os
 path = os.path.dirname(qtrl.__file__)
 print(path)
@@ -29,7 +38,7 @@ class TestREFERENCE:
         from qtrl.managers import VariableManager, MetaManager, PulseManager
         from utils.readout import add_readout
 
-        EXAMPLE_DIR = os.path.join("/home/wlav/quantum/Gang/qtrl/tests", 'ref_config')
+        EXAMPLE_DIR = os.path.join(TESTS_DIR, 'ref_config')
         assert os.path.exists(EXAMPLE_DIR)
 
         var = VariableManager(os.path.join(EXAMPLE_DIR, 'Variables.yaml'))
@@ -46,7 +55,7 @@ class TestREFERENCE:
             os.makedirs(cls.output_dir)
 
     def verify_output(self, name, sequence):
-        with open(os.path.join('/home/wlav/quantum/Gang/qtrl/tests/ref_outputs','{}_output.np'.format(name)), 'rb') as f:
+        with open(os.path.join(REF_OUTPUT,'{}_output.np'.format(name)), 'rb') as f:
             ref_array = np.load(f)
             print(ref_array)
             print(ref_array.shape)
@@ -184,8 +193,8 @@ class TestREFERENCE:
         sequence = all_xy(**kwargs)
         self.verify_output('all_xy', sequence)
 
-    from qtrl.sequencer import Sequence
-    def pi_no_pi(cfg, qubits, file_name):
+    
+    def pi_no_pi(self, cfg, qubits, file_name):
         """Assuming X180 pulses are well tuned for the qubits specified,
         This generates a 2 element sequence, element 1 is X180 on all qubit
         element 0 is nothing on all qubits"""
@@ -213,7 +222,7 @@ class TestREFERENCE:
                   'file_name': file_name
                  }
 
-        sequence = pi_no_pi(**kwargs)
+        sequence = self.pi_no_pi(**kwargs)
         self.verify_output('pi_no_pi', sequence)
 
 list_names = ['interleaved_coherence',\

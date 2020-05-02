@@ -17,22 +17,7 @@ def p(seg):
     if isinstance(seg, float) or isinstance(seg, int):
         return seg
 
-    # check if the segment is an analytical value like 2*pi/4
-    if len(seg.split('*')) == 2:
-        num = float(seg.split('*')[0])
-
-    if len(seg.split('/')) == 2:
-        alt_num = seg.split('/')[0]
-        denom = float (seg.split('/')[1])
-
-        if alt_num == 'pi':
-            return num*pi/denom*360/(2*pi)
-        else:
-            alt_num = float(alt_num)
-            return num*alt_num/denom*360/(2*pi)
-
-    if num is None:
-        num = float(seg)
+    num = eval(seg)
 
     return (num*360/(2*pi))%360.
 

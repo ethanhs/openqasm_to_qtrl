@@ -7,8 +7,8 @@ original repo: https://github.com/qnl/openqasm_transpiler
 """
 import io, os, sys
 import re
-from .qtrl_repr import paramless_reprs as reps
-import qtrl.qpu.qtrl_repr as qtrl_repr
+from openqasm2qtrl.qtrl_repr import paramless_reprs as reps
+import openqasm2qtrl.qtrl_repr as qtrl_repr
 
 custom_gates = {}
 
