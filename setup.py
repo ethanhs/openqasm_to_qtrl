@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 import os
 
 PKG_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -9,5 +9,5 @@ setup(
     description='Generate qtrl given IBM OpenQasm',
     url='https://github.com/ethanhs/openqasm_to_qtrl',
     install_requires=['numpy',QTRL_DEP],
-    packages=find_packages(exclude='qtrl/*')
+    packages=['openqasm2qtrl'],
 )
