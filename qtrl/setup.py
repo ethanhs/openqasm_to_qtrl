@@ -53,8 +53,8 @@ setup(
         'PyQt5',      # id.
     ],
 
-    package_dir={'': './'},
-    packages=find_packages('./', include=['qtrl']),
+    package_dir={'': '.'},
+    packages=find_packages('.', include=['qtrl']),
 
     keywords='quantum computing',
 
