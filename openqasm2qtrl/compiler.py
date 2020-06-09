@@ -144,7 +144,7 @@ def transpile_qasm(input, outf='default', verbose=False, mapping=None):
                     # TODO: in our configuration, we cannot make CNOT in both direction...
                     # We need to add some local gate to make this happen
                     elif gate == 'swap':
-                        output.append( \
+                        output.extend( \
                             ['{},{}/CNOT'.format(q_name[0].upper(), q_name[1].upper()), \
                              '{},{}/CNOT'.format(q_name[1].upper(), q_name[0].upper())])
                     else:
